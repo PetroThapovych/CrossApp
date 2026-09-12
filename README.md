@@ -41,3 +41,38 @@ dotnet run --project src/Cli
 |win-x64  | 76.83 MB|
 |linux-x64| 78.79 MB|
 
+
+\## Структура solution
+
+CrossApp/
+    CrossApp.sln
+    README.md
+    .gitignore
+    src/
+        Core/
+            Core.csproj
+            EnvironmentInfo.cs
+            EnvironmentReport.cs
+        Cli/
+            Cli.csproj
+             Program.cs
+
+\## Build
+
+dotnet build
+
+\## Run
+
+dotnet run --project src/Cli
+
+\## Publish
+
+Self-contained: dotnet publish src/Cli -c Release -r win-x64 --self-contained true
+
+Framework-dependent: dotnet publish src/Cli -c Release -r win-x64 --self-contained false
+
+\## Порівняння
+
+|RID    | Режим             | Розмір | Чи потрібен встановлений runtime?|
+|win-x64|self-contained     | 76.8 MB| Ні                               |
+|win-x64|framework-dependent| 194  KB| Так                              |
