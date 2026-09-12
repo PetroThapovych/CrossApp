@@ -37,8 +37,9 @@ dotnet run --project src/Cli
 
 
 |RID      | Розмір  |
-
+|-------------------|
 |win-x64  | 76.83 MB|
+|-------------------|
 |linux-x64| 78.79 MB|
 
 
@@ -74,5 +75,7 @@ Framework-dependent: dotnet publish src/Cli -c Release -r win-x64 --self-contain
 \## Порівняння
 
 |RID    | Режим             | Розмір | Чи потрібен встановлений runtime?|
+|-----------------------------------------------------------------------|
 |win-x64|self-contained     | 76.8 MB| Ні                               |
+|-----------------------------------------------------------------------|
 |win-x64|framework-dependent| 194  KB| Так                              |
