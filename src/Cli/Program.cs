@@ -1,15 +1,18 @@
-﻿using System.Runtime.InteropServices;
+﻿
 using System.Text.Json;
+using Core;
+
+
+var report = EnvironmentInfo.Collect();
 
 var info = new
 {
-    OSDescription = RuntimeInformation.OSDescription,
-    OSVersion = Environment.OSVersion.ToString(),
-    Architecture = RuntimeInformation.ProcessArchitecture.ToString(),
-    DotNetVersion = Environment.Version.ToString(),
-    Runtime = RuntimeInformation.FrameworkDescription,
-    ApplicationDirectory = AppContext.BaseDirectory,
-    CurrentDirectory = Environment.CurrentDirectory,
+    OSDescription = report.OsDescription,
+    Architecture = report.ProcessArchitecture,
+    Runtime = report.FrameworkDescription,
+    DetectedRid = report.DetectedRid,
+    ReportedRid = report.ReportedRid,
+    ApplicationDirectory = report.BaseDirectory,
     Domain = "Склад (товари, партії, залишки, переміщення)"
 };
 
@@ -19,16 +22,19 @@ if (args.Contains("--json"))
 }
 else
 {
+
+
     Console.WriteLine("CrossApp – практикум з крос-платформного програмування");
     Console.WriteLine("Студент: Цапович Петро, група ФЕІ-35");
     Console.WriteLine(new string('-', 52));
+
     Console.WriteLine($"ОС : {info.OSDescription}");
-    Console.WriteLine($"Версія ОС : {info.OSVersion}");
-    Console.WriteLine($"Архітектура : {info.Architecture}");
-    Console.WriteLine($"Версія .NET : {info.DotNetVersion}");
+    Console.WriteLine($"Архiтектура : {info.Architecture}");
     Console.WriteLine($"Runtime : {info.Runtime}");
+    Console.WriteLine($"RID (визначено програмою): {info.DetectedRid}");
+    Console.WriteLine($"RID (повiдомлено .NET): {info.ReportedRid}");
     Console.WriteLine($"Каталог застосунку : {info.ApplicationDirectory}");
-    Console.WriteLine($"Поточний каталог : {info.CurrentDirectory}");
+
     Console.WriteLine(new string('-', 52));
     Console.WriteLine($"Предметна область: {info.Domain}");
 }
