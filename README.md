@@ -36,10 +36,10 @@ dotnet run --project src/Cli
 
 
 
-|RID      | Розмір  |
-|-------------------|
-|win-x64  | 76.83 MB|
-|linux-x64| 78.79 MB|
+| RID | Розмір |
+|---|---:|
+| `win-x64` | 76.83 MB |
+| `linux-x64` | 78.79 MB |
 
 
 \## Структура solution
