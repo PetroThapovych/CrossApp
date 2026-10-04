@@ -1,0 +1,13 @@
+﻿Id;Sku;Name;Unit;Quantity
+1;LAP-001;Laptop;шт;10
+2;MOU-001;Mouse;шт;50
+3;KEY-001;Keyboard;шт;25
+4;MON-001;Monitor;шт;15
+5;CAB-001;Cable;м;100
+6;PRI-001;Printer;шт;8
+7;PHO-001;Phone;шт;20
+8;TAB-001;Tablet;шт;12
+9;WEB-001;Webcam;шт;30
+10;HEA-001;Headphones;шт;40
+11;PHO-001;Phone;шт;20
+10;TAB-001;Tablet;шт;12
