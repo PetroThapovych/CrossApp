@@ -57,6 +57,7 @@ Product product = Product.Create(
     "шт",
     100);
 
+
 Console.WriteLine(product);
 
 product.RegisterArrival(50);
