@@ -48,3 +48,4 @@ public sealed class Order
     public override string ToString() =>
         $"Замовлення {Id}: {Status}";
 }
+

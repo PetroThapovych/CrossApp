@@ -79,3 +79,33 @@ Framework-dependent: dotnet publish src/Cli -c Release -r win-x64 --self-contain
 | win-x64  | Self-contained       | 76.8 MB  | Ні                     |
 | win-x64  | Framework-dependent  | 194 KB   | Так                    |
 | linux-x64| Self-contained       | 78.79 MB | Ні                     |
+
+
+## Інваріанти домену
+
+## Інваріанти домену
+
+| Правило | Тип винятку | Метод |
+|---|---|---|
+| Ідентифікатор товару не може бути порожнім | `ArgumentException` | `Product.Create()` |
+| SKU товару не може бути порожнім | `ArgumentException` | `Product.Create()` |
+| Назва товару не може бути порожньою | `ArgumentException` | `Product.Create()` |
+| Одиниця виміру не може бути порожньою | `ArgumentException` | `Product.Create()` |
+| Початковий залишок товару не може бути від'ємним | `ArgumentOutOfRangeException` | `Product.Create()` |
+| DTO не може бути `null` | `ArgumentNullException` | `Product.FromDto()` |
+| SKU, назва, одиниця виміру та кількість у DTO не можуть бути `null` | `ArgumentException` | `Product.FromDto()` |
+| Кількість приходу має бути більшою за нуль | `ArgumentOutOfRangeException` | `Product.RegisterArrival()` |
+| Кількість видачі має бути більшою за нуль | `ArgumentOutOfRangeException` | `Product.Issue()` |
+| Не можна видати більше товару, ніж є на складі | `InvalidOperationException` | `Product.Issue()` |
+| Ідентифікатор замовлення не може бути порожнім | `ArgumentException` | `Order()` |
+| Замовлення можна підтвердити або скасувати лише зі стану `Draft` | `InvalidOperationException` | `Order.GetNextStatus()` |
+| Ідентифікатор примірника книги не може бути порожнім | `ArgumentException` | `BookCopy()` |
+| Не можна видати вже виданий примірник | `InvalidOperationException` | `BookCopy.IssueTo()` |
+| Не можна повернути невиданий примірник | `InvalidOperationException` | `BookCopy.Return()` |
+| Ідентифікатор читача не може бути порожнім | `ArgumentException` | `Reader()` |
+| Ім'я читача не може бути порожнім | `ArgumentException` | `Reader()` |
+| Читач не може мати більше ніж 5 відкритих видач | `InvalidOperationException` | `LibraryService.IssueCopy()` |
+| Примірник може повернути лише читач, якому його видано | `InvalidOperationException` | `LibraryService.ReturnCopy()` |
+| Не можна зменшити кількість відкритих видач, якщо вона дорівнює нулю | `InvalidOperationException` | `Reader.CloseLoan()` |
+| Читач і примірник не можуть бути `null` під час видачі або повернення | `ArgumentNullException` | `LibraryService.IssueCopy()`, `LibraryService.ReturnCopy()` |
+

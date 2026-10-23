@@ -35,7 +35,7 @@ namespace Core.Domain
             if (quantity < 0)
                 throw new ArgumentOutOfRangeException(nameof(quantity), quantity,
                 "Початковий залишок не може бути від'ємним");
-            return new Product(id.Trim(), sku.Trim().ToUpperInvariant(),
+            return new Product(id.Trim(), sku.Trim(),
             name.Trim(), unit.Trim(), quantity);
         }
 

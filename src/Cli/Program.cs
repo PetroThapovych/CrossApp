@@ -1,96 +1,45 @@
 ﻿
-using Core.Domain;
-using Core.Dto;
-using Core.Import;
+using Core.Abstractions;
+using Core.Services;
+using Core.Storage;
 
-var dtoResult = ProductCsvImporter.Load("data/sample.csv");
-var result = ProductDomainImporter.Load(dtoResult);
+ICatalogStore store = StoreFactory.Create(args);
 
-Console.WriteLine($"Створено товарів: {result.Items.Count}");
-Console.WriteLine($"Усього помилок: {result.Errors.Count}");
+store = new CachingCatalogStore(store);
 
-foreach (string error in result.Errors)
+var service = new CatalogService(store);
+
+Console.WriteLine($"Сховище: {store.GetType().Name}");
+Console.WriteLine($"Декоратор: {store.GetType().Name}");
+
+try
 {
-    Console.WriteLine(error);
-}
+    var created = service.Add(
+        "SKU-101",
+        "Кабель UTP cat6",
+        "м",
+        50);
 
-Console.WriteLine("\n=== Перевірка ліміту видач ===");
+    service.Receive(created.Id, 25);
 
-var library = new LibraryService();
-var reader = new Reader("R-001", "Петро");
-
-for (int i = 1; i <= 5; i++)
-{
-    library.IssueCopy(reader, new BookCopy($"B-{i:000}"));
-}
-
-Console.WriteLine($"Відкритих видач: {reader.OpenLoans}");
-
-TryDo(
-    "шоста видача",
-    () => library.IssueCopy(reader, new BookCopy("B-006")));
-
-Console.WriteLine("\n=== Перевірка станів замовлення ===");
-
-var order = new Order("ORD-001");
-
-Console.WriteLine(order);
-
-order.Confirm();
-Console.WriteLine(order);
-
-TryDo("повторне підтвердження", () => order.Confirm());
-
-var cancelledOrder = new Order("ORD-002");
-
-cancelledOrder.Cancel();
-Console.WriteLine(cancelledOrder);
-
-TryDo("повторне скасування", () => cancelledOrder.Cancel());
-
-Console.WriteLine("\n=== Сценарiй 1: успiх ===");
-
-Product product = Product.Create(
-    "P-001",
-    "sku-001",
-    "Цемент М400 25кг",
-    "шт",
-    100);
-
-
-Console.WriteLine(product);
-
-product.RegisterArrival(50);
-product.Issue(30);
-
-Console.WriteLine(product);
-
-Console.WriteLine("\n=== Сценарiй 2: порушення iнварiантiв ===");
-
-TryDo(
-    "видача бiльша за залишок",
-    () => product.Issue(1000));
-
-TryDo(
-    "порожнiй SKU",
-    () => Product.Create("P-002", " ", "Пiсок", "т", 10));
-
-TryDo(
-    "вiд'ємний залишок",
-    () => Product.Create("P-003", "SKU-003", "Цегла", "шт", -5));
-
-
-static void TryDo(string title, Action action)
-{
-    try
-    {
-        action();
-        Console.WriteLine(
-            $" {title}: виняток НЕ спрацював — iнварiант вiдсутнiй!");
-    }
-    catch (Exception ex)
+    foreach (var product in service.All())
     {
         Console.WriteLine(
-            $" {title}: {ex.GetType().Name} — {ex.Message}");
+            $" {product.Id} {product.Sku,-10} " +
+            $"{product.Name,-22} {product.Quantity,5} {product.Unit}");
     }
+
+    Console.WriteLine("\nТовари з кількістю від 50:");
+
+    var found = service.Search(p => p.Quantity >= 50);
+
+    foreach (var product in found)
+    {
+        Console.WriteLine(
+            $"{product.Name}: {product.Quantity} {product.Unit}");
+    }
+}
+catch (InvalidOperationException ex)
+{
+    Console.WriteLine($"Помилка: {ex.Message}");
 }
