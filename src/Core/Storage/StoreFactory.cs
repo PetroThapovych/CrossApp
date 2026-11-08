@@ -9,6 +9,7 @@ public static class StoreFactory
     {
         bool useFile = args.Contains("--file");
 
+
         string dataPath = Path.Combine(
             AppContext.BaseDirectory,
             "data",
